@@ -6,7 +6,6 @@
         if(dark)document.documentElement.classList.add('dark');
       }catch(e){}
     })();
-  </script>
   
   <meta name="proxy-host" content="proxy.qxq.news">
   <meta name="proxy-origin" content="https://proxy.qxq.news">
