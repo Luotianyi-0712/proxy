@@ -5,17 +5,7 @@
         var dark=saved==='dark'||(saved==='system'&&systemDark);
         if(dark)document.documentElement.classList.add('dark');
       }catch(e){}
-    })();
-  
-  <meta name="proxy-host" content="proxy.qxq.news">
-  <meta name="proxy-origin" content="https://proxy.qxq.news">
-</head>
-<body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-  <div id="app"><div style="display:flex;align-items:center;justify-content:center;height:100vh"><div class="icon-cloud"></div></div></div>
-  
-  <script>(function() {
-  'use strict';
-  
+      
   const getConfig = () => {
     try {
       return {
