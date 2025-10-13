@@ -1,11 +1,11 @@
 (function(){
-      try{
-        var saved=localStorage.getItem('theme')||'system';
-        var systemDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var dark=saved==='dark'||(saved==='system'&&systemDark);
-        if(dark)document.documentElement.classList.add('dark');
-      }catch(e){}
-      
+  try{
+    var saved=localStorage.getItem('theme')||'system';
+    var systemDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var dark=saved==='dark'||(saved==='system'&&systemDark);
+    if(dark)document.documentElement.classList.add('dark');
+  }catch(e){}
+    
   const getConfig = () => {
     try {
       return {
@@ -17,12 +17,13 @@
       return {host: 'proxy.qxq.news', origin: 'https://proxy.qxq.news', now: new Date().toISOString()};
     }
   };
-  
+    
   const config = getConfig();
 
   function Section({ title, children }) {
+    // [MODIFIED] - Adjusted padding for mobile vs. desktop
     return React.createElement('section', { 
-      className: 'rounded-xl border border-slate-200 bg-white/80 dark:border-slate-700 dark:bg-slate-800/50 p-5 shadow-sm' 
+      className: 'rounded-xl border border-slate-200 bg-white/80 dark:border-slate-700 dark:bg-slate-800/50 p-4 md:p-5 shadow-sm' 
     },
       React.createElement('h2', { className: 'text-lg font-semibold mb-3 text-sky-600 dark:text-sky-400' }, title),
       children
@@ -31,7 +32,7 @@
 
   function ThemeToggle(){
     const [mode, setMode] = React.useState(localStorage.getItem('theme') || 'system');
-    
+      
     React.useEffect(() => {
       const mql = window.matchMedia('(prefers-color-scheme: dark)');
       const apply = () => {
@@ -44,18 +45,18 @@
       mql.addEventListener('change', listener);
       return () => mql.removeEventListener('change', listener);
     }, [mode]);
-    
+      
     const setTheme = (m) => { 
       try { localStorage.setItem('theme', m); } catch(e) {}
       setMode(m); 
     };
-    
+      
     const btn = (m, label) => React.createElement('button', {
       onClick: () => setTheme(m),
       className: 'px-3 py-1.5 text-xs rounded border transition ' +
-                 (mode === m ? 'bg-sky-500 text-white border-sky-500' : 'bg-slate-100 border-slate-300 hover:bg-slate-200 dark:bg-slate-700 dark:border-slate-600')
+                   (mode === m ? 'bg-sky-500 text-white border-sky-500' : 'bg-slate-100 border-slate-300 hover:bg-slate-200 dark:bg-slate-700 dark:border-slate-600')
     }, label);
-    
+      
     return React.createElement('div', {className: 'flex gap-2'},
       btn('system', '系统'), btn('light', '浅色'), btn('dark', '深色')
     );
@@ -98,10 +99,11 @@
   }
 
   function GenRow({ label, value }) {
-    return React.createElement('div', { className: 'flex items-center gap-2 py-2 border-b border-slate-100 dark:border-slate-700 last:border-0' },
-      React.createElement('div', { className: 'min-w-24 text-sm text-slate-600 dark:text-slate-400' }, label),
+    // [MODIFIED] - Major change: Stack layout on mobile, row on desktop. This prevents content from being squished.
+    return React.createElement('div', { className: 'flex flex-col md:flex-row md:items-center gap-2 py-2 border-b border-slate-100 dark:border-slate-700 last:border-0' },
+      React.createElement('div', { className: 'text-sm text-slate-600 dark:text-slate-400' }, label), // [MODIFIED] - Removed min-w-24
       React.createElement('code', { className: 'flex-1 font-mono text-xs text-sky-600 dark:text-sky-400 break-all' }, value),
-      React.createElement('div', { className: 'flex gap-1' },
+      React.createElement('div', { className: 'flex gap-1 self-start md:self-center' }, // [MODIFIED] - Align buttons
         React.createElement('button', { className: 'px-2 py-1 text-xs rounded border bg-slate-100 border-slate-300 hover:bg-slate-200 dark:bg-slate-700 dark:border-slate-600', onClick: () => copyToClipboard(value) }, '复制'),
         React.createElement('button', { className: 'px-2 py-1 text-xs rounded border bg-slate-100 border-slate-300 hover:bg-slate-200 dark:bg-slate-700 dark:border-slate-600', onClick: () => copyToClipboard(`curl -v "${value}"`, '已复制 curl') }, 'curl')
       )
@@ -192,11 +194,14 @@
       ['HTTP B64', `${config.origin}/httpproxyb64/MS4xLjEuMQ==/114514/`]
     ];
 
-    return React.createElement('div', { className: 'max-w-7xl mx-auto p-6' },
+    // [MODIFIED] - Changed main container padding
+    return React.createElement('div', { className: 'max-w-7xl mx-auto p-4 md:p-6' },
       React.createElement('div', { className: 'flex flex-col gap-3' },
-        React.createElement('div', { className: 'flex items-center gap-3' },
+        // [MODIFIED] - Changed header to stack on mobile for better alignment and centering
+        React.createElement('div', { className: 'flex flex-col md:flex-row items-center gap-2 md:gap-3' },
           React.createElement('div', { className: 'icon-cloud' }),
-          React.createElement('h1', { className: 'text-3xl font-bold bg-gradient-to-r from-sky-600 to-cyan-500 bg-clip-text text-transparent' }, 'Cloudflare Workers Proxy')
+          // [MODIFIED] - Adjusted title font size for mobile
+          React.createElement('h1', { className: 'text-2xl md:text-3xl font-bold bg-gradient-to-r from-sky-600 to-cyan-500 bg-clip-text text-transparent text-center md:text-left' }, 'Cloudflare Workers Proxy')
         ),
         React.createElement('div', { className: 'flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400' },
           React.createElement('span', null, '当前域名：'),
@@ -223,12 +228,13 @@
             )
           )
         ),
-        
+          
         React.createElement(Section, { title: '快速示例' },
           React.createElement('ul', { className: 'space-y-2' },
             examples.map(([k, v], i) => 
-              React.createElement('li', { key: i, className: 'flex gap-2 text-sm' },
-                React.createElement('span', { className: 'text-slate-600 dark:text-slate-400 min-w-24' }, k),
+              // [MODIFIED] - Stack layout on mobile to prevent squishing
+              React.createElement('li', { key: i, className: 'flex flex-col md:flex-row gap-1 md:gap-2 text-sm' },
+                React.createElement('span', { className: 'text-slate-600 dark:text-slate-400' }, k), // [MODIFIED] - Removed min-w-24
                 React.createElement('code', { className: 'flex-1 font-mono text-xs text-sky-600 dark:text-sky-400 break-all' }, v)
               )
             )
@@ -294,7 +300,7 @@
       ),
 
       React.createElement('footer', { className: 'mt-8 text-xs text-center text-slate-400' },
-        `部署于 Cloudflare Workers · React 18 + Tailwind CSS · ${config.now}`
+        `部署于 Cloudflare Workers · React 18 + UnoCSS · ${config.now}`
       )
     );
   }
