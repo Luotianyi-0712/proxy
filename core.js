@@ -188,8 +188,8 @@
       ['HTTP 代理', `${config.origin}/httpproxy/httpbin.org/get`],
       ['通用协议', `${config.origin}/https/httpbin.org/get`],
       ['WebSocket', `wss://${config.host}/wss/echo.websocket.events`],
-      ['HTTP 端口(IP)', `${config.origin}/httpproxyport/124.70.58.97/11434/`],
-      ['HTTP B64', `${config.origin}/httpproxyb64/MTI0LjcwLjU4Ljk3/11434/`]
+      ['HTTP 端口(IP)', `${config.origin}/httpproxyport/1.1.1.1/114514/`],
+      ['HTTP B64', `${config.origin}/httpproxyb64/MS4xLjEuMQ==/114514/`]
     ];
 
     return React.createElement('div', { className: 'max-w-7xl mx-auto p-6' },
