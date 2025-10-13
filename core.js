@@ -286,7 +286,7 @@
         React.createElement(Section, { title: '调试端点' },
           React.createElement(Code, { lines: [
             `curl "${config.origin}/debug"`,
-            `curl "${config.origin}/debug?path=/httpproxyport/124.70.58.97/11434/v1"`,
+            `curl "${config.origin}/debug?path=/httpproxyport/1.1.1.1/114514/v1"`,
             `curl "${config.origin}/_worker/info"`,
             `curl "${config.origin}/health"`
           ]})
