@@ -186,6 +186,7 @@
     const outputs = genProxyUrls(src, config.origin);
 
     const examples = [
+      ['通用代理', `${config.origin}/https://api.example.com`],
       ['HTTPS 代理', `${config.origin}/proxy/example.com/`],
       ['HTTP 代理', `${config.origin}/httpproxy/httpbin.org/get`],
       ['通用协议', `${config.origin}/https/httpbin.org/get`],
@@ -261,6 +262,7 @@
 
         React.createElement(Section, { title: 'Rewrite 规则' },
           React.createElement(Code, { lines: [
+            '/http://... 或 /https://... → 通用反代（直接转发完整 URL）',
             '/proxy/:host/:url* → https://:host/:url*',
             '/proxyport/:host/:port/:url* → https://:host::port/:url*',
             '/proxyb64/:base64_host/:port/:url* → https://[decoded]::port/:url*',
