@@ -112,7 +112,7 @@
 
   function b64url(s) {
     try {
-      return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode(parseInt(p1, 16)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     } catch (e) { return ''; }
   }
 
@@ -203,7 +203,8 @@
           // [MODIFIED] - Adjusted title font size for mobile
           React.createElement('h1', { className: 'text-2xl md:text-3xl font-bold bg-gradient-to-r from-sky-600 to-cyan-500 bg-clip-text text-transparent text-center md:text-left' }, 'Cloudflare Workers Proxy')
         ),
-        React.createElement('span', null, '当前域名：'),
+        React.createElement('div', { className: 'flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400' },
+          React.createElement('span', null, '当前域名：'),
           React.createElement('code', { className: 'px-2 py-1 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-slate-900 dark:text-white font-mono text-xs' }, config.host),
           React.createElement('div', { className: 'ml-auto flex items-center gap-2' },
             React.createElement('span', null, '主题：'),
